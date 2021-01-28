@@ -75,10 +75,10 @@ export default (editor, config) => {
       command: otm,
       className: 'fa fa-cog',
     },{
-      id: ola,
-      command: ola,
-      className: 'fa fa-bars',
-    },{
+    //   id: ola,
+    //   command: ola,
+    //   className: 'fa fa-bars',
+    // },{
       id: obl,
       command: obl,
       className: 'fa fa-th-large',

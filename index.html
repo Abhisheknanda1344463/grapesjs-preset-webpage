@@ -6,6 +6,7 @@
     <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
     <link href="dist/grapesjs-preset-webpage.min.css" rel="stylesheet">
     <script src="//feather.aviary.com/imaging/v3/editor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://static.filestackapi.com/v3/filestack-0.1.10.js"></script>
     <script src="https://unpkg.com/grapesjs"></script>
     <script src="dist/grapesjs-preset-webpage.min.js"></script>
@@ -15,86 +16,71 @@
         height: 100%;
         margin: 0;
       }
+      .column {
+        min-height: 75px;
+        flex-grow: 1;
+        flex-basis: 100%;
+        overflow: auto;
+      }
+      .row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: stretch;
+        flex-wrap: nowrap;
+      }
+      .add-pges{
+        float: right;
+        padding-left: 130px;
+        margin-top: 2px;
+      }
+      .fa-plus-square{
+        padding-left: 130px;
+      }
     </style>
   </head>
   <body>
 
-    <div id="gjs" style="height:0px; overflow:hidden">
-      <div class="panel">
-        <h1 class="welcome">Welcome to</h1>
-        <div class="big-title">
-          <svg class="logo" viewBox="0 0 100 100">
-            <path d="M40 5l-12.9 7.4 -12.9 7.4c-1.4 0.8-2.7 2.3-3.7 3.9 -0.9 1.6-1.5 3.5-1.5 5.1v14.9 14.9c0 1.7 0.6 3.5 1.5 5.1 0.9 1.6 2.2 3.1 3.7 3.9l12.9 7.4 12.9 7.4c1.4 0.8 3.3 1.2 5.2 1.2 1.9 0 3.8-0.4 5.2-1.2l12.9-7.4 12.9-7.4c1.4-0.8 2.7-2.2 3.7-3.9 0.9-1.6 1.5-3.5 1.5-5.1v-14.9 -12.7c0-4.6-3.8-6-6.8-4.2l-28 16.2"/>
-          </svg>
-          <span>GrapesJS</span>
-        </div>
-        <div class="description">
-          This is a demo content from index.html. For the development, you shouldn't edit this file, instead you can
-          copy and rename it to _index.html, on next server start the new file will be served, and it will be ignored by git.
-        </div>
-      </div>
-      <style>
-        .panel {
-          width: 90%;
-          max-width: 700px;
-          border-radius: 3px;
-          padding: 30px 20px;
-          margin: 150px auto 0px;
-          background-color: #d983a6;
-          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.25);
-          color:rgba(255,255,255,0.75);
-          font: caption;
-          font-weight: 100;
-        }
-
-        .welcome {
-          text-align: center;
-          font-weight: 100;
-          margin: 0px;
-        }
-
-        .logo {
-          width: 70px;
-          height: 70px;
-          vertical-align: middle;
-        }
-
-        .logo path {
-          pointer-events: none;
-          fill: none;
-          stroke-linecap: round;
-          stroke-width: 7;
-          stroke: #fff
-        }
-
-        .big-title {
-          text-align: center;
-          font-size: 3.5rem;
-          margin: 15px 0;
-        }
-
-        .description {
-          text-align: justify;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-      </style>
+    <div class="row" style="height:100%">
+      <div id="layers" class="column" style="flex-basis: 250px; display: none;margin-top: 40px; background-color: rgb(70, 58, 60);">
+        <div class="gjs-pn-panel gjs-pn-commands gjs-one-bg gjs-two-color"><div class="gjs-pn-buttons"><div class="mult-pgs"><i class="fa fa-clone" aria-hidden="true">Pages</i><i class="fa fa-plus-square" aria-hidden="true"></i></div>
+        <span class="gjs-pn-btn"></span></div></div>
+        <div id="layers-container"></div>
     </div>
 
 
+    <div id="gjs" style="overflow:hidden">
+      </div>
+    </div>
+
     <script type="text/javascript">
+      // CKEDITOR.dtd.$editable.a = 1;
       var editor = grapesjs.init({
         height: '100%',
         showOffsets: 1,
         noticeOnUnload: 0,
+        // protectedCss: '* {box-sizing: border-box;}body {margin: 0;}',
+        localStorage: 1,
         storageManager: { autoload: 0 },
         container: '#gjs',
-        fromElement: true,
-
+        styleManager: { clearProperties: true },
+        current: 1,
+        layerManager: {
+          appendTo: '#layers-container'
+        },
         plugins: ['gjs-preset-webpage'],
         pluginsOpts: {
-          'gjs-preset-webpage': {}
+          'gjs-preset-webpage': { some: 'value' }
         }
+      });
+
+      window.editor = editor;
+        $('.fa-plus').click( function() {
+          var toggleWidth = $("#blocks-mgr").width() == 250 ? "0px" : "250px";
+          $('#blocks-mgr').animate({ width: toggleWidth },50);
+        });
+
+      editor.on('load',function() {
+        $("#layers").show();
       });
     </script>
   </body>
